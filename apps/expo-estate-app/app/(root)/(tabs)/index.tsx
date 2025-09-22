@@ -10,7 +10,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text className="my-10 text-lg font-bold">Welcome to Nativewind</Text>
+      <Text className="font-rubik my-10 text-3xl font-bold">Welcome to Nativewind</Text>
       <Link href="/sign-in">Sign in</Link>
       <Link href="/profile">Profile</Link>
       <Link href="/explore">Explore</Link>
