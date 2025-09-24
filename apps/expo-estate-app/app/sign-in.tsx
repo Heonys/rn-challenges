@@ -3,13 +3,20 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import images from "@/constants/images";
 import icons from "@/constants/icons";
 import { login } from "@/service/appwrite";
+import { useGlobalContext } from "@/service/global-provider";
+import { Redirect } from "expo-router";
 
 export default function SignIn() {
+  const { refetch, loading, isLoggedIn } = useGlobalContext();
+
+  if (!loading && isLoggedIn) return <Redirect href="/" />;
+
   const handleLogin = async () => {
     const result = await login();
 
     if (result) {
       console.log("login success");
+      // refetch();
     } else {
       Alert.alert("Error", "Failed to login");
     }
