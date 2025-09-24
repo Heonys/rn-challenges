@@ -1,25 +1,34 @@
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import images from "@/constants/images";
 import icons from "@/constants/icons";
+import { login } from "@/service/appwrite";
 
 export default function SignIn() {
-  const handleLogin = () => {};
+  const handleLogin = async () => {
+    const result = await login();
+
+    if (result) {
+      console.log("login success");
+    } else {
+      Alert.alert("Error", "Failed to login");
+    }
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView contentContainerClassName="h-full">
         <Image source={images.onboarding} resizeMode="contain" className="h-4/6 w-full" />
         <View className="px-10">
-          <Text className="font-rubik text-black-200 text-center uppercase">
+          <Text className="text-center font-rubik uppercase text-black-200">
             Welcome to Restate
           </Text>
-          <Text className="font-rubik-bold text-black-300 mt-2 text-center text-3xl">
+          <Text className="mt-2 text-center font-rubik-bold text-3xl text-black-300">
             {`Let's Get You Closer to \n`}
             <Text className="text-primary-300">Your Ideal Home</Text>
           </Text>
 
-          <Text className="font-rubik text-black-200 mt-12 text-center text-lg">
+          <Text className="mt-12 text-center font-rubik text-lg text-black-200">
             Login to ReState with Google
           </Text>
 
@@ -29,7 +38,7 @@ export default function SignIn() {
           >
             <View className="flex flex-row items-center justify-center">
               <Image source={icons.google} resizeMode="contain" className="h-5 w-5" />
-              <Text className="font-rubik-medium text-black-300 ml-2 text-lg">
+              <Text className="ml-2 font-rubik-medium text-lg text-black-300">
                 Continue with Google
               </Text>
             </View>
