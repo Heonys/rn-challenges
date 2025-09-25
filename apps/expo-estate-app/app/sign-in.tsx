@@ -16,7 +16,7 @@ export default function SignIn() {
 
     if (result) {
       console.log("login success");
-      // refetch();
+      refetch();
     } else {
       Alert.alert("Error", "Failed to login");
     }

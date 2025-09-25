@@ -22,12 +22,10 @@ export async function login() {
   try {
     const redirectUrl = Linking.createURL("/");
 
-    const response = account.createOAuth2Session({
+    const response = await account.createOAuth2Token({
       provider: OAuthProvider.Google,
       success: redirectUrl,
-      failure: redirectUrl,
     });
-
     if (!response) throw new Error("Failed to login");
 
     const browserResult = await WebBrowser.openAuthSessionAsync(response.toString(), redirectUrl);
@@ -63,7 +61,7 @@ export async function getCurrentUser() {
   try {
     const response = await account.get();
     if (response.$id) {
-      const userAvatar = avatar.getInitials({ name: response.name });
+      const userAvatar = avatar.getInitialsURL(response.name);
       return { ...response, avatar: userAvatar.toString() };
     }
   } catch (error) {
