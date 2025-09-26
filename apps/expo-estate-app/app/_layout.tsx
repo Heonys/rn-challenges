@@ -4,6 +4,7 @@ import { useFonts } from "expo-font";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import "../global.css";
 import { GlobalProvider } from "@/service/global-provider";
+import { StatusBar } from "expo-status-bar";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -24,6 +25,7 @@ export default function RootLayout() {
   if (!loaded && !error) return null;
   return (
     <SafeAreaProvider>
+      <StatusBar style="dark" />
       <GlobalProvider>
         <Stack screenOptions={{ headerShown: false }} />
       </GlobalProvider>

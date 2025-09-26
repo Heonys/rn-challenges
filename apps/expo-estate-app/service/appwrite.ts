@@ -122,3 +122,19 @@ export async function getFilteredProperties({
     console.error(error);
   }
 }
+
+export async function getPropertyById({ id }: { id: string }) {
+  try {
+    const result = await tables.getRow({
+      databaseId: config.databaseId!,
+      tableId: config.propertiesTableId!,
+      rowId: id,
+    });
+    console.log(result);
+
+    return result;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
