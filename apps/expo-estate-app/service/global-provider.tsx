@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { useAppwrite } from "./useAppwrite";
+import { useAppFetch } from "@/hooks";
 import { getCurrentUser } from "./appwrite";
 
 interface User {
@@ -19,7 +19,7 @@ interface GlobalContextType {
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
 export const GlobalProvider = ({ children }: React.PropsWithChildren) => {
-  const { data, loading, refetch } = useAppwrite({ fn: getCurrentUser });
+  const { data, loading, refetch } = useAppFetch({ fn: getCurrentUser });
   const isLoggedIn = !!data;
 
   return (

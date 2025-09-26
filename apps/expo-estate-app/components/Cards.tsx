@@ -2,15 +2,17 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import images from "@/constants/images";
 import icons from "@/constants/icons";
+import { Models } from "react-native-appwrite";
 
 type Props = {
+  item: Models.DefaultRow;
   onPress: () => void;
 };
 
-export function FeaturedCards({ onPress }: Props) {
+export function FeaturedCards({ item, onPress }: Props) {
   return (
     <TouchableOpacity onPress={onPress} className="relative flex h-80 w-60 flex-col">
-      <Image source={images.japan} className="size-full rounded-2xl" />
+      <Image source={{ uri: item.image }} className="size-full rounded-2xl" />
       <Image source={images.cardGradient} className="absolute bottom-0 size-full rounded-2xl" />
 
       <View className="absolute right-5 top-5 flex flex-row items-center gap-1 rounded-full bg-white px-3 py-1.5">
@@ -32,7 +34,7 @@ export function FeaturedCards({ onPress }: Props) {
   );
 }
 
-export function Cards({ onPress }: Props) {
+export function Cards({ item, onPress }: Props) {
   return (
     <TouchableOpacity
       onPress={onPress}

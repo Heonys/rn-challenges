@@ -2,7 +2,7 @@ import { Alert } from "react-native";
 import { useEffect, useState, useCallback } from "react";
 
 interface UseAppwriteOptions<T, P extends Record<string, string | number>> {
-  fn: (params?: P) => Promise<T>;
+  fn: (params: P) => Promise<T>;
   params?: P;
   skip?: boolean;
 }
@@ -14,7 +14,7 @@ interface UseAppwriteReturn<T, P> {
   refetch: (newParams: P) => Promise<void>;
 }
 
-export const useAppwrite = <T, P extends Record<string, string | number>>({
+export const useAppFetch = <T, P extends Record<string, string | number>>({
   fn,
   params = {} as P,
   skip = false,
@@ -24,7 +24,7 @@ export const useAppwrite = <T, P extends Record<string, string | number>>({
   const [error, setError] = useState<string | null>(null);
 
   const fetchData = useCallback(
-    async (fetchParams?: P) => {
+    async (fetchParams: P) => {
       setLoading(true);
       setError(null);
 
@@ -46,9 +46,10 @@ export const useAppwrite = <T, P extends Record<string, string | number>>({
     if (!skip) {
       fetchData(params);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const refetch = async (newParams?: P) => await fetchData(newParams);
+  const refetch = async (newParams: P) => await fetchData(newParams);
 
   return { data, loading, error, refetch };
 };

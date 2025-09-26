@@ -3,16 +3,40 @@ import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { FeaturedCards, Cards, Search, Filters } from "@/components";
 import icons from "@/constants/icons";
 import { useGlobalContext } from "@/service/global-provider";
+import { useLocalSearchParams } from "expo-router";
+import { useAppFetch } from "@/hooks";
+import { getLatestProperties, getFilteredProperties } from "@/service/appwrite";
+import { useEffect } from "react";
 
 export default function Index() {
   const { user } = useGlobalContext();
+  const params = useLocalSearchParams<{ filter?: string; query?: string }>();
+  const { data: lastestData, loading: lastestLoading } = useAppFetch({ fn: getLatestProperties });
+
+  const { data, refetch } = useAppFetch({
+    fn: getFilteredProperties,
+    params: {
+      filter: params.filter!,
+      query: params.query!,
+      limit: 6,
+    },
+    skip: true,
+  });
+
+  useEffect(() => {
+    refetch({
+      filter: params.filter!,
+      query: params.query!,
+      limit: 6,
+    });
+  }, [params.filter, params.query, refetch]);
 
   return (
     <SafeAreaView className="h-full bg-white">
       <FlatList
-        data={[1, 2, 3, 4]}
-        renderItem={() => <Cards onPress={() => {}} />}
-        keyExtractor={(item) => item.toString()}
+        data={data ?? []}
+        keyExtractor={(item) => item.$id}
+        renderItem={({ item }) => <Cards item={item} onPress={() => {}} />}
         numColumns={2}
         contentContainerClassName="pb-20"
         columnWrapperClassName="flex gap-4 px-4"
@@ -40,13 +64,13 @@ export default function Index() {
               </View>
             </View>
             <FlatList
-              data={[1, 2, 3]}
-              keyExtractor={(item) => item.toString()}
+              data={lastestData}
+              keyExtractor={(item) => item.$id}
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerClassName="flex gap-4"
               bounces={false}
-              renderItem={() => <FeaturedCards onPress={() => {}} />}
+              renderItem={({ item }) => <FeaturedCards item={item} onPress={() => {}} />}
             />
 
             <View className="my-4">

@@ -1,4 +1,4 @@
-import { Client, Avatars, Account, OAuthProvider } from "react-native-appwrite";
+import { Client, Avatars, Account, OAuthProvider, TablesDB, Query } from "react-native-appwrite";
 import * as Linking from "expo-linking";
 import * as WebBrowser from "expo-web-browser";
 
@@ -6,6 +6,11 @@ export const config = {
   platform: "com.heonys.restate",
   endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
   projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID,
+  databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID,
+  agentsTableId: "agents",
+  gallerriesTableId: "galleries",
+  reviewsTableId: "reviews",
+  propertiesTableId: "properties",
 };
 
 export const client = new Client();
@@ -17,6 +22,7 @@ client //
 
 export const avatar = new Avatars(client);
 export const account = new Account(client);
+export const tables = new TablesDB(client);
 
 export async function login() {
   try {
@@ -67,5 +73,52 @@ export async function getCurrentUser() {
   } catch (error) {
     console.error(error);
     return null;
+  }
+}
+
+export async function getLatestProperties() {
+  try {
+    const result = await tables.listRows({
+      databaseId: config.databaseId!,
+      tableId: config.propertiesTableId,
+      queries: [Query.orderDesc("$createdAt"), Query.limit(5)],
+    });
+    return result.rows;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function getFilteredProperties({
+  filter,
+  query,
+  limit,
+}: {
+  filter: string;
+  query: string;
+  limit?: number;
+}) {
+  try {
+    const queries = [Query.orderDesc("$createdAt")];
+
+    if (filter && filter !== "All") queries.push(Query.equal("type", filter));
+    if (limit) queries.push(Query.limit(limit));
+    if (query) {
+      queries.push(
+        Query.or([
+          Query.search("name", query),
+          Query.search("address", query),
+          Query.search("type", query),
+        ]),
+      );
+    }
+    const result = await tables.listRows({
+      databaseId: config.databaseId!,
+      tableId: config.propertiesTableId,
+      queries,
+    });
+    return result.rows;
+  } catch (error) {
+    console.error(error);
   }
 }
