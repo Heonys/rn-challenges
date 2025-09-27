@@ -6,7 +6,8 @@
   "scripts": {
     "preinstall": "pnpm dlx only-allow pnpm",
     "estate": "pnpm -F @rn/estate-app start",
-    "dev": "pnpm estate"
+    "movie": "pnpm -F @rn/movie-app start",
+    "dev": "pnpm movie"
   },
   "keywords": [],
   "author": "",
