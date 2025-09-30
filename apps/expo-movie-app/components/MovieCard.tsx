@@ -1,7 +1,7 @@
-import { icons } from "@/constants/icons";
-import { Movie } from "@/types";
 import { Link } from "expo-router";
 import { Text, TouchableOpacity, Image, View } from "react-native";
+import { icons } from "@/constants/icons";
+import { Movie } from "@/types";
 
 export function MovieCard({ id, poster_path, title, vote_average, release_date }: Movie) {
   return (
