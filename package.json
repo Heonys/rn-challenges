@@ -7,7 +7,8 @@
     "preinstall": "pnpm dlx only-allow pnpm",
     "estate": "pnpm -F @rn/estate-app start",
     "movie": "pnpm -F @rn/movie-app start",
-    "dev": "pnpm movie"
+    "delivery": "pnpm -F @rn/delivery-app start",
+    "dev": "pnpm delivery"
   },
   "keywords": [],
   "author": "",
